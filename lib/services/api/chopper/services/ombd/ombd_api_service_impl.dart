@@ -9,12 +9,12 @@ part 'ombd_api_service_impl.chopper.dart';
 abstract class OmbdApiServiceImpl extends ChopperService
     implements OmbdApiService {
   @override
-  @Get(path: '')
-  Future<Response> fetchMovies();
-
-  @override
   @Post(path: '')
-  Future<Response> search();
+  Future<Response> search({
+    @Query('i') String? exactId,
+    @Query('t') String? exactIshTitle,
+    @Query('s') String? term,
+  });
 
   static OmbdApiServiceImpl create([ChopperClient? client]) {
     return _$OmbdApiServiceImpl(client);

@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ombd_movies/app/app.dart';
+import 'package:ombd_movies/app/bloc_observer.dart';
 import 'package:ombd_movies/di/di.dart';
-import 'package:ombd_movies/features/app/app.dart';
-import 'package:ombd_movies/features/app/bloc_observer.dart';
 import 'package:ombd_movies/utility/config.dart';
 
 abstract class EntryPoint {
   static Future<void> runWithConfig(Config config) async {
+    WidgetsFlutterBinding.ensureInitialized();
+
     Bloc.observer = AppBlocObserver();
 
     runZonedGuarded(

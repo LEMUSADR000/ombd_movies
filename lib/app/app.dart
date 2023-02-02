@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ombd_movies/features/app/routes.dart';
+import 'package:ombd_movies/app/routes.dart';
 
 class OMBDMoviesApp extends StatelessWidget {
   const OMBDMoviesApp({Key? key}) : super(key: key);

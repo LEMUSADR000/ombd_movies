@@ -1,6 +1,9 @@
 import 'package:chopper/chopper.dart';
 
 abstract class OmbdApiService {
-  Future<Response> fetchMovies();
-  Future<Response> search();
+  Future<Response> search({
+    String? exactId,
+    String? exactIshTitle,
+    String? term,
+  });
 }

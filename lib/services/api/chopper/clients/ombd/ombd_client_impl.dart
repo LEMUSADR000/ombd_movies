@@ -7,6 +7,10 @@ class OmbdClientImpl implements OmbdClient {
 
   OmbdClientImpl._(this.client);
 
+  @override
+  ServiceType getService<ServiceType extends ChopperService>() =>
+      client.getService<ServiceType>();
+
   factory OmbdClientImpl.withServices({
     required Config config,
     required Iterable<ChopperService> services,
