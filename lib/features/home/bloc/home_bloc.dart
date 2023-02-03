@@ -23,40 +23,50 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   })  : _moviesRepository = moviesRepository,
         _localStorage = localStorage,
         super(HomeState.idle(favorites: localStorage.favorites)) {
-    on<Search>(_search);
+    on<TapRecentSearch>(_tapRecentSearch);
+    on<TapSearch>(_tapSearch);
+    on<SetFocus>(_setFocus);
     on<ExitSearch>(_exitSearch);
     on<Favorite>(_favorite);
   }
 
-  Future<void> _exitSearch(ExitSearch event, Emitter<HomeState> emit) async {
-    emit(HomeState.idle(
+  void _setFocus(SetFocus event, Emitter<HomeState> emit) {
+    emit(state.copyWith(
+      hasKeyboardFocus: event.hasFocus,
       favorites: state.favorites,
-      recentlyViewed: state.recentlyViewed,
+      recentlySearched: state.recentlySearched,
     ));
   }
 
-  Future<void> _search(Search event, Emitter<HomeState> emit) async {
-    emit(HomeState.searching(
+  void _exitSearch(ExitSearch event, Emitter<HomeState> emit) {
+    _editingController.clear();
+    emit(HomeState.idle(
+      hasKeyboardFocus: state.hasKeyboardFocus,
       favorites: state.favorites,
-      recentlyViewed: state.recentlyViewed,
+      recentlySearched: state.recentlySearched,
+    ));
+  }
+
+  Future<void> _tapRecentSearch(
+    TapRecentSearch event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(HomeState.searching(
+      hasKeyboardFocus: state.hasKeyboardFocus,
+      favorites: state.favorites,
+      recentlySearched: state.recentlySearched,
     ));
 
     try {
-      if (_editingController.text.isEmpty) {
-        _editingController.clear();
-        return;
-      }
-
       final SearchResultsResponse response =
-          await _moviesRepository.resultsForTerm(term: _editingController.text);
-      final List<String> searchKeys = (response.search ?? [])
-          .map((e) => e.title ?? 'N/A')
-          .toList(growable: false);
+          await _moviesRepository.resultsForTerm(term: event.term);
 
       emit(HomeState.viewingSearchResults(
+        hasKeyboardFocus: state.hasKeyboardFocus,
         favorites: state.favorites,
-        recentlyViewed: state.recentlyViewed,
-        searchResults: searchKeys,
+        recentlySearched:
+            {event.term, ...state.recentlySearched}.toList(growable: false),
+        searchResults: response.search ?? [],
       ));
     } catch (e) {
       if (kDebugMode) {
@@ -64,8 +74,49 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       emit(HomeState.searchFailed(
+        hasKeyboardFocus: state.hasKeyboardFocus,
         favorites: state.favorites,
-        recentlyViewed: state.recentlyViewed,
+        recentlySearched: state.recentlySearched,
+      ));
+    }
+  }
+
+  Future<void> _tapSearch(TapSearch event, Emitter<HomeState> emit) async {
+    if (_editingController.text.isEmpty) {
+      emit(HomeState.idle(
+        hasKeyboardFocus: state.hasKeyboardFocus,
+        favorites: state.favorites,
+        recentlySearched: state.recentlySearched,
+      ));
+      return;
+    }
+
+    emit(HomeState.searching(
+      hasKeyboardFocus: state.hasKeyboardFocus,
+      favorites: state.favorites,
+      recentlySearched: state.recentlySearched,
+    ));
+
+    try {
+      final SearchResultsResponse response =
+          await _moviesRepository.resultsForTerm(term: _editingController.text);
+
+      emit(HomeState.viewingSearchResults(
+        hasKeyboardFocus: state.hasKeyboardFocus,
+        favorites: state.favorites,
+        recentlySearched: {_editingController.text, ...state.recentlySearched}
+            .toList(growable: false),
+        searchResults: response.search ?? [],
+      ));
+    } catch (e) {
+      if (kDebugMode) {
+        print('Failed to search $e');
+      }
+
+      emit(HomeState.searchFailed(
+        hasKeyboardFocus: state.hasKeyboardFocus,
+        favorites: state.favorites,
+        recentlySearched: state.recentlySearched,
       ));
     }
   }
@@ -80,8 +131,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       emit(HomeState.searchFailed(
+        hasKeyboardFocus: state.hasKeyboardFocus,
         favorites: state.favorites,
-        recentlyViewed: state.recentlyViewed,
+        recentlySearched: state.recentlySearched,
       ));
     }
   }

@@ -2,26 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ombd_movies/features/home/bloc/home_bloc.dart';
 
-class MovieSearchField extends StatefulWidget {
+class MovieSearchField extends StatelessWidget {
   const MovieSearchField({Key? key}) : super(key: key);
-
-  @override
-  State<MovieSearchField> createState() => _MovieSearchFieldState();
-}
-
-class _MovieSearchFieldState extends State<MovieSearchField> {
-  bool keyboardHasFocus = false;
 
   @override
   Widget build(BuildContext context) {
     final HomeBloc bloc = context.read<HomeBloc>();
 
     return Focus(
-      onFocusChange: (hasFocus) {
-        setState(() {
-          keyboardHasFocus = hasFocus;
-        });
-      },
+      onFocusChange: (hasFocus) => bloc.add(HomeEvent.setFocus(hasFocus)),
       child: TextFormField(
         controller: bloc.editingController,
         decoration: InputDecoration(
@@ -34,7 +23,7 @@ class _MovieSearchFieldState extends State<MovieSearchField> {
                   duration: const Duration(milliseconds: 200),
                   child: Icon(
                     viewingResults ? Icons.highlight_remove : Icons.search,
-                    color: keyboardHasFocus ? Colors.blue : null,
+                    color: state.hasKeyboardFocus ? Colors.blue : null,
                   ),
                 ),
                 onPressed: viewingResults
@@ -48,9 +37,8 @@ class _MovieSearchFieldState extends State<MovieSearchField> {
           ),
           border: const OutlineInputBorder(),
         ),
-        onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
         textInputAction: TextInputAction.search,
-        onFieldSubmitted: (_) => bloc.add(const HomeEvent.search()),
+        onFieldSubmitted: (_) => bloc.add(const HomeEvent.tapSearch()),
       ),
     );
   }

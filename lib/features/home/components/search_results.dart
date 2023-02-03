@@ -1,49 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ombd_movies/di/di.dart';
 import 'package:ombd_movies/features/home/bloc/home_bloc.dart';
+import 'package:ombd_movies/features/movie_loader/bloc/movies_loader_bloc.dart';
+import 'package:ombd_movies/features/movie_loader/movie_result_card.dart';
+import 'package:ombd_movies/services/api/repositories/models/search_results.dart';
 
 class SearchResults extends StatelessWidget {
   const SearchResults({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeBloc, HomeState>(
-      listener: (_, state) {
-        if (state is SearchFailed) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Search failed. Please try again later."),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      },
-      buildWhen: (_, curr) => curr is! SearchFailed,
-      builder: (_, state) {
-        final Widget child;
-        if (state is Searching) {
-          child = const Center(child: CircularProgressIndicator());
-        } else if (state is ViewingSearchResults) {
-          child = ListView.builder(
-            itemCount: state.searchResults.length,
-            itemBuilder: (_, i) {
-              return ListTile(title: Text(state.searchResults[i]));
-            },
-          );
-        } else {
-          child = ListView.builder(
-            itemCount: state.recentlyViewed.length,
-            itemBuilder: (_, i) {
-              return ListTile(title: Text(state.recentlyViewed[i]));
-            },
-          );
-        }
+    final HomeBloc bloc = context.read<HomeBloc>();
+    final List<Search> searchResults =
+        (bloc.state as ViewingSearchResults).searchResults;
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: child,
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Search Results",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Flexible(
+            child: ListView.separated(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: searchResults.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 20),
+              itemBuilder: (_, i) {
+                final Search search = searchResults[i];
+
+                return BlocProvider(
+                  create: (context) => getIt<MovieLoaderBloc>()
+                    ..add(MovieLoaderEvent.load(search.imdbID)),
+                  child: MovieResultCard(
+                    id: search.imdbID,
+                    imageUrl: search.poster,
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }
