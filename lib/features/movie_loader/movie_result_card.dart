@@ -36,9 +36,11 @@ class MovieResultCard extends StatelessWidget {
               width: 200,
               child: BlocBuilder<MovieLoaderBloc, MovieLoaderState>(
                 builder: (context, state) {
+                  final String url = state.search?.poster ?? imageUrl ?? '';
+
                   return CachedNetworkImage(
                     fit: BoxFit.scaleDown,
-                    imageUrl: state.search?.poster ?? imageUrl ?? 'invalid_url',
+                    imageUrl: url,
                     imageBuilder: (context, imageProvider) => Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(image: imageProvider),
