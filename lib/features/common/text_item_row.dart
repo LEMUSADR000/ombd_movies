@@ -26,6 +26,7 @@ class TextItemRow extends StatelessWidget {
           ),
         ),
         Flexible(
+          flex: 3,
           child: Text(
             right,
             textAlign: TextAlign.end,
