@@ -1,3 +1,4 @@
+/// ASSUMPTION: Local storage will be stubbed in unit tests
 abstract class LocalStorage {
   Future<void> init();
   Future<bool> clearStorage();

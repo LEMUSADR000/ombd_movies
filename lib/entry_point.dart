@@ -16,7 +16,16 @@ abstract class EntryPoint {
 
     runZonedGuarded(
       () async {
+        /// ASSUMPTION: In a real application we'd likely have a mix of
+        /// build flavors targeting dev, staging, and production. Our config
+        /// may be mutated to have a flag for this and then this will be used
+        /// within our dependency injection/service locator to initialize our
+        /// dependencies with appropriate flags.
         getIt.init(config: config);
+
+        // Placing 10 seconds wait on initializing dependencies - this particular
+        // application will never get close to using up all of this time so if
+        // it fails to load, it's because of an error
         await getIt.allReady(timeout: const Duration(seconds: 10));
 
         runApp(const OMBDMoviesApp());

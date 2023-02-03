@@ -11,6 +11,11 @@ class MoviesRepositoryImpl implements MoviesRepository {
   MoviesRepositoryImpl({required OmbdApiService ombdApiService})
       : _ombdApiService = ombdApiService;
 
+  /// ASSUMPTION: We want to return cached item if searched by direct ID since we may
+  /// as well use the identifying information returned by the backend. Any time
+  /// we make an id/title search and get a SearchResponse we want to cache
+  /// this by the ID as it is going to be otherwise fetched again immediately
+  /// after navigating to the DetailsPage
   @override
   Future<SearchResponse> searchById({required String id}) async {
     if (_results.containsKey(id)) {

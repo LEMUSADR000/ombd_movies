@@ -51,6 +51,8 @@ class LocalStorageImpl implements LocalStorage {
 
   // ---- Read section end ------------------------
 
+  /// ASSUMPTION: We will want to eventually allow for a user to clear storage.
+  /// this use case is more common in a situation where we have login/logout.
   @override
   Future<bool> clearStorage() async {
     final bool isCleared = await _sharedPreferences.clear();
