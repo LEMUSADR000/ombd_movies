@@ -1,7 +1,7 @@
 # ombd_movies
 Movie viewer application meant to interact with https://www.omdbapi.com/
 
-# Startup
+### Startup
 
 You will need to create a token at https://www.omdbapi.com/ if you don't already have one.
 
@@ -13,7 +13,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 flutter run --dart-define=token=<token>
 ```
 
-# Notes
+### Notes
 If I had more time...
 * Pulled search functionality into its own dropdown modal for easier state management of 'actively searching' state
 * Created a paginated search result view, right now we only display the first page of results but the backend appears to support paged requests
@@ -21,7 +21,41 @@ If I had more time...
 * Sorting functionality for favorites
 * Ensure that application works & looks good on different form factors (I used an iPhone 14 Pro for emulation)
 
-# Known Issues
+### Project Structure
+```
+mobile_app_architecture
+└── lib
+    ├── entry_point.dart                    Abstract entry point, wraps the app with the passed config
+    ├── main_get_it.dart                    Get it based repositories entry point (Refer to note about repository access)
+    ├── app
+    │   ├── application.dart                Top-level app widget (`MaterialApp`)
+    │   ├── bloc_observer.dart              An interface for observing the behavior of Bloc instances (very useful for logging)
+    │   └── routes.dart                     Map of named routes used in the app
+    ├── di
+    │   └── di.dart                         Service locator
+    ├── features
+    │   ├── ...                             Application screens(features)
+    │   ├── ...                             Each feature can have such directories as `bloc`,
+    │   ├── ...                             'components' (widgets related to this screen), 'models', 'utils'
+    ├── services
+    │   ├── api
+    │   │   ├── chopper
+    │   │   │   └── ...                     Chopper services for each api endpoint
+    │   │   ├── models
+    │   │   │   └── ...                     API response models
+    │   │   ├── repositories                
+    │   │   │   └── ...                     Domain layer data repositories
+    │   ├── local
+    │   │   ├── storage.dart                Shared preferences wrapper
+    │   │   └── storage_migration
+    │   │       └── ...                     Classes related to shared preferences migration
+    └── utils
+        └── config                          Config model which can be modified in any way to suit the needs of the application
+└── test
+    └── unit testing files and directories
+```
+
+### Known Issues
 
 If you encounter the below issue, it seems to stem from [this](https://github.com/Baseflow/flutter_cached_network_image) package leaking exceptions. If I were
 to use this in a production application I would likely attempt to use the forked version found
