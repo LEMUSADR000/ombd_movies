@@ -49,6 +49,10 @@ class MovieResultCard extends StatelessWidget {
                   builder: (context, state) {
                     final String url = state.search?.poster ?? imageUrl ?? '';
 
+                    /// ASSUMPTION: We want to cache any image requests we make
+                    /// since re-requesting images can be an expensive problem
+                    /// to have & this really helps make scrolling as smooth
+                    /// as possible.
                     return CachedNetworkImage(
                       fit: BoxFit.scaleDown,
                       imageUrl: url,
