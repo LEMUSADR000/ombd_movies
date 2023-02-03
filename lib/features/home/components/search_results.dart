@@ -15,6 +15,17 @@ class SearchResults extends StatelessWidget {
     final List<Search> searchResults =
         (bloc.state as ViewingSearchResults).searchResults;
 
+    if (searchResults.isEmpty) {
+      return Container(
+        alignment: Alignment.topCenter,
+        padding: const EdgeInsets.only(top: 50),
+        child: const Text(
+          "No results found",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -30,7 +41,6 @@ class SearchResults extends StatelessWidget {
           const SizedBox(height: 4),
           Flexible(
             child: ListView.separated(
-              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: searchResults.length,
               separatorBuilder: (_, __) => const SizedBox(width: 20),

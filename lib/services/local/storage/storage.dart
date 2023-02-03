@@ -5,7 +5,7 @@ abstract class LocalStorage {
   Future<bool> toggleFavorite(String id);
   Future<bool> setMigrationId(int id);
 
-  Set<String> get favorites;
+  List<String> get favorites;
   int? get migrationId;
 }
 

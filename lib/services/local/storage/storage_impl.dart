@@ -46,9 +46,8 @@ class LocalStorageImpl implements LocalStorage {
   int? get migrationId => _sharedPreferences.getInt(StorageKeys.kMigrationId);
 
   @override
-  Set<String> get favorites =>
-      _sharedPreferences.getStringList(StorageKeys.kFavorites)?.toSet() ??
-      <String>{};
+  List<String> get favorites =>
+      _sharedPreferences.getStringList(StorageKeys.kFavorites) ?? [];
 
   // ---- Read section end ------------------------
 

@@ -34,8 +34,9 @@ class IdleContent extends StatelessWidget {
                 final List<String> favorites =
                     state.favorites.toList(growable: false);
 
+                print('rebuilding with $favorites');
+
                 return ListView.separated(
-                  shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: favorites.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 20),
