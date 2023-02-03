@@ -10,6 +10,15 @@ part 'home_bloc.freezed.dart';
 part 'home_event.dart';
 part 'home_state.dart';
 
+/// ASSUMPTION: Our bloc's events & states should be frozen data models,
+/// this prevents asynchronous data access problems where data models become
+/// inconsistent if accessed & modified around the app & also for having
+/// pattern-matching of event/state types. To accomplish this we are using the
+/// freezed package which has some other really great features that we didn't
+/// get into in this package
+///
+/// freezed: https://pub.dev/packages/freezed
+
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final MoviesRepository _moviesRepository;
   final LocalStorage _localStorage;
