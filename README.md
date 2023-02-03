@@ -13,6 +13,13 @@ flutter pub run build_runner build --delete-conflicting-outputs
 flutter run --dart-define=token=<token>
 ```
 
+# Notes
+If I had more time...
+* Pulled search functionality into its own dropdown modal for easier state management of 'actively searching' state
+* Create a more fleshed out set of unit tests including widgets
+* Sorting functionality for favorites
+* Ensure that application works & looks good on different form factors (I used an iPhone 14 Pro for emulation)
+
 # Known Issues
 
 If you encounter the below issue, it seems to stem from [this](https://github.com/Baseflow/flutter_cached_network_image) package leaking exceptions. If I were

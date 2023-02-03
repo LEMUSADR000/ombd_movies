@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:ombd_movies/services/local/storage/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// ASSUMPTION: Any model data that is persisted can benefit from having migration
+/// logic attached to it, better safe than sorry!
 abstract class Migration {
   final SharedPreferences _sharedPreferences;
 

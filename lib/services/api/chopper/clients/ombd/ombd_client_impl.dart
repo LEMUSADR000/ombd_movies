@@ -24,6 +24,9 @@ class OmbdClientImpl implements OmbdClient {
     return OmbdClientImpl._(client);
   }
 
+  /// ASSUMPTION: Current config contains our token, but in a sign-on-enabled
+  /// application we would actually eagerly load a token from some form of
+  /// secure storage, and then use this value instead of pulling from our config
   static Request _addQueryParameter(Request req, Config config) {
     final params = Map<String, dynamic>.from(req.parameters);
     params['apikey'] = config.token;

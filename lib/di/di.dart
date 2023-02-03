@@ -14,6 +14,9 @@ import 'package:ombd_movies/utility/config.dart';
 final GetIt getIt = GetIt.instance;
 
 extension GetItExtension on GetIt {
+  /// ASSUMPTION: Initialization of services needs knowledge of some config
+  /// information for knowing if we are in prod, staging, dev env
+
   void init({required Config config}) {
     getIt
       /* Global */
