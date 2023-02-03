@@ -28,8 +28,8 @@ class MovieSearchField extends StatelessWidget {
                 ),
                 onPressed: viewingResults
                     ? () {
-                        bloc.add(const HomeEvent.exitSearch());
                         FocusManager.instance.primaryFocus?.unfocus();
+                        bloc.add(const HomeEvent.exitSearch());
                       }
                     : null,
               );
@@ -39,6 +39,7 @@ class MovieSearchField extends StatelessWidget {
         ),
         textInputAction: TextInputAction.search,
         onFieldSubmitted: (_) => bloc.add(const HomeEvent.tapSearch()),
+        onTapOutside: (event) {},
       ),
     );
   }
