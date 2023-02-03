@@ -22,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required LocalStorage localStorage,
   })  : _moviesRepository = moviesRepository,
         _localStorage = localStorage,
-        super(HomeState.idle(favorites: localStorage.favorites)) {
+        super(HomeState.idle(favorites: localStorage.favorites.toSet())) {
     on<TapRecentSearch>(_tapRecentSearch);
     on<TapSearch>(_tapSearch);
     on<SetFocus>(_setFocus);
@@ -123,8 +123,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _favorite(Favorite event, Emitter<HomeState> emit) async {
     try {
-      await _localStorage.toggleFavorite(event.id);
-      emit(state.copyWith(favorites: _localStorage.favorites));
+      _localStorage.toggleFavorite(event.id);
+
+      Set<String> favorites = {...state.favorites};
+      if (state.favorites.contains(event.id)) {
+        favorites.remove(event.id);
+      } else {
+        favorites.add(event.id);
+      }
+
+      emit(state.copyWith(favorites: favorites));
     } catch (e) {
       if (kDebugMode) {
         print('Failed to toggle favorite item $e');
