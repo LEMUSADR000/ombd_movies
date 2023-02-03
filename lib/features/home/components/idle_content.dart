@@ -34,8 +34,6 @@ class IdleContent extends StatelessWidget {
                 final List<String> favorites =
                     state.favorites.toList(growable: false);
 
-                print('rebuilding with $favorites');
-
                 return ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: favorites.length,

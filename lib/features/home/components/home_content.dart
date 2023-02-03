@@ -42,7 +42,12 @@ class HomeContent extends StatelessWidget {
                 } else {
                   child = Stack(
                     children: [
-                      const IdleContent(),
+                      GestureDetector(
+                        onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
+                        child: const IdleContent(),
+                      ),
                       if (state.hasKeyboardFocus) const RecentlyViewed()
                     ],
                   );
