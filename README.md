@@ -16,7 +16,7 @@ flutter run --dart-define=token=<token>
 # Known Issues
 
 If you encounter the below issue, it seems to stem from this package leaking exceptions. If I were
-to use this in a production application I would likely attempt to use the forked version found
+to use [this](https://github.com/Baseflow/flutter_cached_network_image) in a production application I would likely attempt to use the forked version found
 https://github.com/Baseflow/flutter_cached_network_image/pull/777 where we can provide our
 own error listener in order to handle this more gracefully.
 
