@@ -20,13 +20,14 @@ If I had more time...
 * Create a more fleshed out set of unit tests including widgets
 * Sorting functionality for favorites
 * Ensure that application works & looks good on different form factors (I used an iPhone 14 Pro for emulation)
+* General app logging
 
 ### Project Structure
 ```
 mobile_app_architecture
 └── lib
     ├── entry_point.dart                    Abstract entry point, wraps the app with the passed config
-    ├── main_get_it.dart                    Get it based repositories entry point (Refer to note about repository access)
+    ├── main_get_it.dart                    Get it based repositories entry point
     ├── app
     │   ├── application.dart                Top-level app widget (`MaterialApp`)
     │   ├── bloc_observer.dart              An interface for observing the behavior of Bloc instances (very useful for logging)
