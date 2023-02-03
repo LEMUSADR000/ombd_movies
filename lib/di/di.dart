@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:ombd_movies/features/home/bloc/home_bloc.dart';
+import 'package:ombd_movies/features/movie_loader/bloc/movies_loader_bloc.dart';
 import 'package:ombd_movies/services/api/chopper/clients/ombd/ombd_client.dart';
 import 'package:ombd_movies/services/api/chopper/clients/ombd/ombd_client_impl.dart';
 import 'package:ombd_movies/services/api/chopper/services/ombd/ombd_api_service.dart';
@@ -29,6 +30,11 @@ extension GetItExtension on GetIt {
         () => HomeBloc(
           moviesRepository: getIt(),
           localStorage: getIt(),
+        ),
+      )
+      ..registerFactory<MovieLoaderBloc>(
+        () => MovieLoaderBloc(
+          moviesRepository: getIt(),
         ),
       )
 

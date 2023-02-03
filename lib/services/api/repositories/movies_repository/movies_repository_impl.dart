@@ -13,6 +13,10 @@ class MoviesRepositoryImpl implements MoviesRepository {
 
   @override
   Future<SearchResponse> searchById({required String id}) async {
+    if (_results.containsKey(id)) {
+      return _results[id]!;
+    }
+
     return _searchHelper({'id': id});
   }
 
