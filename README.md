@@ -8,7 +8,7 @@ You will need to create a token at https://www.omdbapi.com/ if you don't already
 ```
 flutter pub get
 
-flutter pub run build_runner watch --delete-conflicting-outputs
+flutter pub run build_runner build --delete-conflicting-outputs
 
 flutter run --dart-define=token=<token>
 ```
