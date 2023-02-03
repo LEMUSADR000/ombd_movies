@@ -38,7 +38,7 @@ class MovieSearchField extends StatelessWidget {
           border: const OutlineInputBorder(),
         ),
         textInputAction: TextInputAction.search,
-        onFieldSubmitted: (_) => bloc.add(const HomeEvent.tapSearch()),
+        onFieldSubmitted: (_) => bloc.add(const HomeEvent.submitSearch()),
         onTapOutside: (event) {},
       ),
     );
