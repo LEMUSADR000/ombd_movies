@@ -24,7 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         _localStorage = localStorage,
         super(HomeState.idle(favorites: localStorage.favorites.toSet())) {
     on<TapRecentSearch>(_tapRecentSearch);
-    on<TapSearch>(_tapSearch);
+    on<SubmitSearch>(_submitSearch);
     on<SetFocus>(_setFocus);
     on<ExitSearch>(_exitSearch);
     on<Favorite>(_favorite);
@@ -81,7 +81,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  Future<void> _tapSearch(TapSearch event, Emitter<HomeState> emit) async {
+  Future<void> _submitSearch(
+    SubmitSearch event,
+    Emitter<HomeState> emit,
+  ) async {
     if (_editingController.text.isEmpty) {
       emit(HomeState.idle(
         hasKeyboardFocus: state.hasKeyboardFocus,
